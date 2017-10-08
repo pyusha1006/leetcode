@@ -1,0 +1,82 @@
+package hackerRank.problem.practice;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+public class Stats {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter wr = new PrintWriter(System.out);
+		int T = Integer.parseInt(br.readLine().trim());
+		for (int t_i = 0; t_i < T; t_i++) {
+			String[] arr = br.readLine().split(" ");
+			long[] array = new long[3];
+			for (int i = 0; i < arr.length; i++) {
+				array[i] = Long.parseLong(arr[i]);
+			}
+			long row = array[0];
+			long col = array[1];
+			long stampAvl = array[2];
+
+			long out_ = maxStampedArea(row, col, stampAvl);
+			System.out.println(out_);
+		}
+
+		wr.close();
+		br.close();
+	}
+
+	static long maxStampedArea(long row,long col, long stampAvl)
+	    { 
+	    	long maxStamp = Long.MIN_VALUE;
+	    	long stampAvlCopy = stampAvl;
+	    	long areaAvl = row * col;
+	    	if(areaAvl <= stampAvl){
+	    		maxStamp = stampAvl;
+	    	}
+	    	else{
+	    		if(stampAvl%row == 0 || stampAvl%col ==0){
+	    			maxStamp = stampAvl;
+	    		}
+	    		else{
+	    			long sqStamp = calcSqStamp(row,col,stampAvl);
+	    			boolean out = false;
+	    			while(out == false){
+	    				stampAvlCopy--;
+	    				 out =  calcMaxStamp(row,col,stampAvlCopy);
+	    			}
+	    			maxStamp = Math.max(sqStamp,stampAvlCopy);
+	    			}
+	    	}
+	    	return maxStamp;
+	    }
+	
+	
+	
+	static boolean calcMaxStamp(long row,long col, long stampAvl){
+		boolean flag = false;
+		if(stampAvl%row == 0 || stampAvl%col ==0){
+			flag = true;
+		}
+		return flag;
+	}
+	static long calcSqStamp(long row,long col, long stampAvl){
+		if(row==col){
+		if(row*col < stampAvl){
+			return row*col;
+		}
+		else{
+			row--;
+			col--;
+			calcSqStamp(row,col,stampAvl);
+		}
+		return row * col;
+		}
+		else
+		{
+			return Long.MIN_VALUE;
+		}
+	}
+}
