@@ -1,0 +1,20 @@
+static int getMaxLenSubArray(int[] inputArray) {                              //time complexity: O(n)
+		 HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int len = 0;
+        int sum = 0;
+       for (int i = 0; i < inputArray.length; i++) {
+    	   sum = sum + inputArray[i];
+    	   if (inputArray[i] == 0 && len == 0)
+               len = 1;
+
+           if (sum == 0)
+               len = i+1;
+           
+           Integer prev_i = map.get(sum);
+           if (prev_i != null)
+               len = Math.max(len, i-prev_i);
+            else  
+               map.put(sum, i);
+       }
+        return len;
+    }
